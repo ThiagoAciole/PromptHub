@@ -69,7 +69,6 @@ export async function exportPrompts(db: Database, filters: PromptFilters): Promi
     .where(where)
     .groupBy(prompts.id, categories.name, subcategories.name)
     .orderBy(orderBy)
-    .limit(Math.min(filters.limit, 100))
     .offset((filters.page - 1) * filters.limit);
 }
 

@@ -57,6 +57,20 @@ docker compose up --build
 
 O Compose sobe PostgreSQL 17 e a API na porta 3333, executando migrations antes do servidor.
 
+## Backup e restauração
+
+```powershell
+docker compose exec postgres pg_dump -U prompthub prompthub > backup.sql
+Get-Content backup.sql | docker compose exec -T postgres psql -U prompthub prompthub
+```
+
+## Troubleshooting
+
+- `DATABASE_URL` ausente ou inválida: configure uma URL `postgres://` ou `postgresql://` com host.
+- `db:migrate` recusado: confirme que PostgreSQL está acessível na porta configurada ou suba o Compose.
+- `pnpm` não encontrado no Windows: use `corepack pnpm`.
+- Falha na importação: confirme extensão `.csv`, MIME CSV e as colunas `act` e `prompt`.
+
 ## Validação
 
 ```powershell
