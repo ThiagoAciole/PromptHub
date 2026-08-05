@@ -11,7 +11,9 @@ import { normalizeSlug } from "../../shared/slug/normalize-slug.js";
 import { createPromptRepository } from "./prompt.repository.js";
 import type { PromptFilters, PromptInput } from "./prompt.types.js";
 
-async function validateTaxonomy(db: Database, input: PromptInput): Promise<void> {
+type DatabaseExecutor = Pick<Database, "select" | "insert" | "update" | "delete">;
+
+async function validateTaxonomy(db: DatabaseExecutor, input: PromptInput): Promise<void> {
   if (input.categoryId && !(await db.select({ id: categories.id }).from(categories).where(eq(categories.id, input.categoryId))).length) {
     throw new AppError("NOT_FOUND", 404, "Categoria não encontrada");
   }
@@ -24,7 +26,7 @@ async function validateTaxonomy(db: Database, input: PromptInput): Promise<void>
   }
 }
 
-async function resolveTags(db: Database, names: string[]) {
+async function resolveTags(db: DatabaseExecutor, names: string[]) {
   const resolved = [] as Array<typeof tags.$inferSelect>;
   for (const name of names) {
     const slug = normalizeSlug(name);
@@ -51,30 +53,32 @@ export function createPromptService(db: Database) {
   const repository = createPromptRepository(db);
   return {
     async create(input: PromptInput) {
-      await validateTaxonomy(db, input);
-      const [prompt] = await db
-        .insert(prompts)
-        .values({
-          title: input.title,
-          content: input.content,
-          originalTitle: input.originalTitle,
-          originalContent: input.originalContent,
-          description: input.description,
-          type: input.type ?? "text",
-          language: input.language ?? "pt-BR",
-          contributor: input.contributor,
-          forDevelopers: input.forDevelopers ?? false,
-          favorite: input.favorite ?? false,
-          archived: input.archived ?? false,
-          categoryId: input.categoryId,
-          subcategoryId: input.subcategoryId,
-          contentHash: createPromptHash(input.title, input.content)
-        })
-        .returning();
-      if (!prompt) throw new AppError("DATABASE_ERROR", 500, "Prompt não pôde ser criado");
-      const promptTagValues = await resolveTags(db, input.tags ?? []);
-      if (promptTagValues.length > 0) await db.insert(promptTags).values(promptTagValues.map((tag) => ({ promptId: prompt.id, tagId: tag.id })));
-      return prompt;
+      return db.transaction(async (tx) => {
+        await validateTaxonomy(tx, input);
+        const [prompt] = await tx
+          .insert(prompts)
+          .values({
+            title: input.title,
+            content: input.content,
+            originalTitle: input.originalTitle,
+            originalContent: input.originalContent,
+            description: input.description,
+            type: input.type ?? "text",
+            language: input.language ?? "pt-BR",
+            contributor: input.contributor,
+            forDevelopers: input.forDevelopers ?? false,
+            favorite: input.favorite ?? false,
+            archived: input.archived ?? false,
+            categoryId: input.categoryId,
+            subcategoryId: input.subcategoryId,
+            contentHash: createPromptHash(input.title, input.content)
+          })
+          .returning();
+        if (!prompt) throw new AppError("DATABASE_ERROR", 500, "Prompt não pôde ser criado");
+        const promptTagValues = await resolveTags(tx, input.tags ?? []);
+        if (promptTagValues.length > 0) await tx.insert(promptTags).values(promptTagValues.map((tag) => ({ promptId: prompt.id, tagId: tag.id })));
+        return prompt;
+      });
     },
     async list(filters: PromptFilters) {
       return repository.list(filters);
