@@ -56,6 +56,16 @@ A tela principal usará uma composição de catálogo minimalista:
 
 Cada card exibirá título, descrição ou trecho do conteúdo, categoria, tags, idioma, tipo e estado de favorito. O conteúdo completo será acessível sem navegar para outra página.
 
+## Skills Mantine
+
+Durante a implementação, devem ser usadas as skills Mantine disponíveis em `/mantine-..` quando o componente correspondente for criado ou alterado:
+
+- `mantine-custom-components`: componentes próprios integrados ao tema, Styles API e tokens do Mantine, como `PromptCard`, `PromptFilters` e estados visuais.
+- `mantine-combobox`: filtros de categoria, subcategoria, tags e outros selects com busca ou múltipla seleção.
+- `mantine-form`: formulários futuros de criação e edição de prompts, caso essa parte entre no escopo.
+
+As skills serão lidas antes da implementação de cada superfície correspondente. Não serão criadas abstrações customizadas quando um componente Mantine existente atender ao requisito.
+
 ## Contrato com a API
 
 O cliente será tipado para os endpoints existentes:
