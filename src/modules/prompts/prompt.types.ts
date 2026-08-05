@@ -19,6 +19,7 @@ export interface PromptFilters {
   search?: string | undefined;
   categoryId?: string | undefined;
   subcategoryId?: string | undefined;
+  tag?: string | undefined;
   language?: string | undefined;
   type?: string | undefined;
   favorite?: boolean | undefined;

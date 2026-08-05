@@ -7,6 +7,7 @@ function filters(query: Record<string, string | undefined>): PromptFilters {
     search: query.search,
     categoryId: query.categoryId,
     subcategoryId: query.subcategoryId,
+    tag: query.tag,
     language: query.language,
     type: query.type,
     favorite: query.favorite === undefined ? undefined : query.favorite === "true",

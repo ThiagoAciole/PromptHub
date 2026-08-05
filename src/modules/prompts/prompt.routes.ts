@@ -11,7 +11,7 @@ interface PromptQuery extends Partial<Omit<PromptFilters, "page" | "limit">> {
 }
 
 const querySchema = Type.Object({
-  search: Type.Optional(Type.String()), categoryId: Type.Optional(Type.String({ format: "uuid" })), subcategoryId: Type.Optional(Type.String({ format: "uuid" })),
+  search: Type.Optional(Type.String()), categoryId: Type.Optional(Type.String({ format: "uuid" })), subcategoryId: Type.Optional(Type.String({ format: "uuid" })), tag: Type.Optional(Type.String()),
   language: Type.Optional(Type.String()), type: Type.Optional(Type.String()), favorite: Type.Optional(Type.Boolean()), archived: Type.Optional(Type.Boolean()),
   page: Type.Optional(Type.Integer({ minimum: 1 })), limit: Type.Optional(Type.Integer({ minimum: 1, maximum: 100 })), sort: Type.Optional(Type.Union([Type.Literal("title"), Type.Literal("createdAt"), Type.Literal("updatedAt")])), order: Type.Optional(Type.Union([Type.Literal("asc"), Type.Literal("desc")]))
 });

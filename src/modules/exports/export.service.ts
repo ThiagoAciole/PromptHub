@@ -31,6 +31,7 @@ export async function exportPrompts(db: Database, filters: PromptFilters): Promi
   const conditions = [
     filters.categoryId ? eq(prompts.categoryId, filters.categoryId) : undefined,
     filters.subcategoryId ? eq(prompts.subcategoryId, filters.subcategoryId) : undefined,
+    filters.tag ? sql`exists (select 1 from ${promptTags} pt join ${tags} t on t.id = pt.tag_id where pt.prompt_id = ${prompts.id} and t.slug = ${filters.tag})` : undefined,
     filters.language ? eq(prompts.language, filters.language) : undefined,
     filters.type ? eq(prompts.type, filters.type) : undefined,
     filters.favorite === undefined ? undefined : eq(prompts.favorite, filters.favorite),
