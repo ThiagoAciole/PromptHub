@@ -3,7 +3,6 @@ WORKDIR /app
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json drizzle.config.ts ./
 COPY src ./src
-COPY tests ./tests
 RUN pnpm install --frozen-lockfile
 RUN pnpm build
 
