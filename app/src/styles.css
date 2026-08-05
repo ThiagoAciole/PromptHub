@@ -24,12 +24,13 @@ body {
 .filter-pills button { border: 0; border-radius: 999px; background: #1b1b21; color: #a9a3b3; padding: 7px 14px; font: 500 12px ui-monospace, SFMono-Regular, monospace; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
 .filter-pills button.active, .filter-pills button:hover { background: #282632; color: #eeeaf5; }
 .filter-pills span { width: 1px; height: 20px; background: #292730; margin: 0 4px; }
-.prompt-card { background: #17171c; border-color: #292830; min-height: 215px; transition: border-color .18s ease, transform .18s ease; }
+.prompt-card { background: #17171c; border-color: #292830; min-height: 236px; transition: border-color .18s ease, transform .18s ease; display: flex; }
 .prompt-card:hover { border-color: #575164; transform: translateY(-2px); }
+.prompt-card-content { width: 100%; min-height: 100%; }
 .prompt-card .mantine-Title-root { font-size: 1.13rem; font-weight: 600; }
-.prompt-card .mantine-Text-root { line-height: 1.55; }
+.prompt-card-description { line-height: 1.55; min-height: 72px; }
 .prompt-card .mantine-Badge-root { background: #202026; color: #a8a1b3; border: 0; font-family: ui-monospace, monospace; font-size: 10px; }
-.prompt-card-actions { border-top: 1px solid #292830; margin: 10px -18px -18px; padding: 10px 18px; }
+.prompt-card-actions { border-top: 1px solid #292830; margin: auto -18px -18px; padding: 12px 18px 0; min-height: 30px; }
 .create-modal { background: #111117; border: 1px solid #2b2934; }
 .create-modal-header { background: #111117; border-bottom: 1px solid #2b2934; padding: 17px 20px; }
 .create-modal-title { font-size: 1.35rem; }
