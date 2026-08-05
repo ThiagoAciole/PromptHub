@@ -30,7 +30,7 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
     genReqId: () => randomUUID()
   });
 
-  void app.register(corsPlugin, { origins: config.corsOrigins });
+  void app.register(corsPlugin, { origins: config.corsOrigins, nodeEnv: config.nodeEnv });
   void app.register(multipart, {
     limits: { fileSize: config.maxUploadSizeMb * 1024 * 1024 }
   });
