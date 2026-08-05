@@ -5,9 +5,11 @@ import swaggerUi from "@fastify/swagger-ui";
 import Fastify, { type FastifyInstance } from "fastify";
 import { randomUUID } from "node:crypto";
 import type { AppConfig } from "./config/env.js";
+import { databasePlugin } from "./plugins/database.js";
 
 export interface BuildAppOptions {
   config: AppConfig;
+  databaseUrl?: string;
   logger?: boolean;
 }
 
@@ -43,6 +45,9 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
     }
   });
   void app.register(swaggerUi, { routePrefix: "/docs" });
+  void app.register(databasePlugin, {
+    databaseUrl: options.databaseUrl ?? config.databaseUrl
+  });
 
   return app;
 }
