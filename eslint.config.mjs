@@ -7,6 +7,6 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   prettier,
   {
-    ignores: ["dist/**", "node_modules/**", "drizzle/**"]
+    ignores: ["dist/**", "app/dist/**", "node_modules/**", "drizzle/**"]
   }
 );
