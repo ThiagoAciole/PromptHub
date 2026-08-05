@@ -20,6 +20,10 @@ describe("toErrorResponse", () => {
     );
   });
 
+  it("keeps taxonomy uniqueness conflicts generic", () => {
+    expect(toErrorResponse({ code: "23505", constraint: "categories_slug_unique" }, true).error.code).toBe("CONFLICT");
+  });
+
   it("hides internal details in production", () => {
     expect(toErrorResponse(new Error("database password"), true)).toEqual({
       error: {

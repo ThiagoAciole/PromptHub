@@ -25,11 +25,22 @@ export function toErrorResponse(error: unknown, production: boolean): ErrorRespo
     };
   }
 
-  if (isRecord(error) && error.code === "23505") {
+  if (isRecord(error) && error.code === "23505" && error.constraint === "prompts_content_hash_unique") {
     return {
       error: {
         code: "PROMPT_ALREADY_EXISTS",
         message: "Já existe um prompt com o mesmo conteúdo",
+        statusCode: 409,
+        details: null
+      }
+    };
+  }
+
+  if (isRecord(error) && error.code === "23505") {
+    return {
+      error: {
+        code: "CONFLICT",
+        message: "Já existe um registro com os mesmos dados únicos",
         statusCode: 409,
         details: null
       }
