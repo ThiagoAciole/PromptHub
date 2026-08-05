@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { isIP } from "node:net";
 
 export type NodeEnvironment = "development" | "test" | "production";
 export type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
@@ -33,6 +34,54 @@ function positiveNumber(source: NodeJS.ProcessEnv, name: string, fallback: strin
   return value;
 }
 
+function validateHost(value: string): string {
+  const isHostname = /^(?=.{1,253}$)(?!-)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/.test(
+    value
+  );
+  if (isIP(value) === 0 && !isHostname) {
+    throw new Error(`Variável de ambiente inválida: HOST=${value}`);
+  }
+  return value;
+}
+
+function validateCorsOrigins(source: NodeJS.ProcessEnv, nodeEnv: NodeEnvironment): string[] {
+  const raw = source.CORS_ORIGINS?.trim() || "";
+  const origins = raw
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  for (const origin of origins) {
+    if (origin === "*") {
+      if (nodeEnv !== "development") {
+        throw new Error("Variável de ambiente inválida: CORS_ORIGINS=* só é permitido em development");
+      }
+      continue;
+    }
+
+    let parsed: URL;
+    try {
+      parsed = new URL(origin);
+    } catch {
+      throw new Error(`Variável de ambiente inválida: CORS_ORIGINS contém uma origem inválida: ${origin}`);
+    }
+
+    if (
+      !["http:", "https:"].includes(parsed.protocol) ||
+      !parsed.hostname ||
+      parsed.username ||
+      parsed.password ||
+      parsed.pathname !== "/" ||
+      parsed.search ||
+      parsed.hash
+    ) {
+      throw new Error(`Variável de ambiente inválida: CORS_ORIGINS contém uma origem inválida: ${origin}`);
+    }
+  }
+
+  return origins;
+}
+
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): AppConfig {
   const nodeEnv = (source.NODE_ENV?.trim() || "development") as NodeEnvironment;
   if (!nodeEnvironments.has(nodeEnv)) {
@@ -44,17 +93,12 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): AppConfig {
     throw new Error(`Variável de ambiente inválida: LOG_LEVEL=${logLevel}`);
   }
 
-  const corsOrigins = (source.CORS_ORIGINS?.trim() || "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-
   return {
     nodeEnv,
-    host: source.HOST?.trim() || "0.0.0.0",
+    host: validateHost(source.HOST?.trim() || "0.0.0.0"),
     port: positiveNumber(source, "PORT", "3333"),
     databaseUrl: required(source, "DATABASE_URL"),
-    corsOrigins,
+    corsOrigins: validateCorsOrigins(source, nodeEnv),
     maxUploadSizeMb: positiveNumber(source, "MAX_UPLOAD_SIZE_MB", "10"),
     logLevel
   };

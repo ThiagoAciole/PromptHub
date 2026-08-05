@@ -13,8 +13,9 @@ export interface BuildAppOptions {
 
 export function buildApp(options: BuildAppOptions): FastifyInstance {
   const { config } = options;
+  const loggerEnabled = options.logger ?? config.nodeEnv !== "test";
   const app = Fastify({
-    logger: options.logger ?? config.nodeEnv !== "test",
+    logger: loggerEnabled ? { level: config.logLevel } : false,
     bodyLimit: config.maxUploadSizeMb * 1024 * 1024,
     requestIdHeader: "x-request-id",
     genReqId: () => randomUUID()
