@@ -204,14 +204,14 @@
           "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true,
-          "default": "'TEXT'"
+          "default": "'text'"
         },
         "language": {
           "name": "language",
           "type": "varchar(20)",
           "primaryKey": false,
           "notNull": true,
-          "default": "'en'"
+          "default": "'pt-BR'"
         },
         "contributor": {
           "name": "contributor",

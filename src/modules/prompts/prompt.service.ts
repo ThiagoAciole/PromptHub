@@ -58,8 +58,8 @@ export function createPromptService(db: Database) {
           title: input.title,
           content: input.content,
           description: input.description,
-          type: input.type ?? "TEXT",
-          language: input.language ?? "en",
+          type: input.type ?? "text",
+          language: input.language ?? "pt-BR",
           contributor: input.contributor,
           forDevelopers: input.forDevelopers ?? false,
           favorite: input.favorite ?? false,
@@ -118,6 +118,13 @@ export function createPromptService(db: Database) {
         })
         .where(eq(prompts.id, id))
         .returning();
+      if (input.tags !== undefined) {
+        await db.delete(promptTags).where(eq(promptTags.promptId, id));
+        const promptTagValues = await resolveTags(db, input.tags);
+        if (promptTagValues.length > 0) {
+          await db.insert(promptTags).values(promptTagValues.map((tag) => ({ promptId: id, tagId: tag.id })));
+        }
+      }
       return prompt;
     },
     async remove(id: string) {
