@@ -7,7 +7,7 @@ API REST modular para catálogo local de prompts, construída com Fastify, TypeS
 - Node.js 22+
 - pnpm via Corepack (`corepack pnpm`)
 - PostgreSQL 17 para migrations, CRUD e importação real
-- Docker opcional para execução completa
+- Docker/Compose no ZimaOS para execução em servidor
 
 ## Configuração
 
@@ -48,14 +48,24 @@ corepack pnpm import:csv prompts.csv
 
 Linhas inválidas são contabilizadas individualmente e o importador continua processando o arquivo.
 
-## Docker
+## Deploy no ZimaOS
 
 ```powershell
 Copy-Item .env.docker.example .env
-docker compose up --build
+docker compose up -d --build
+docker compose logs -f api
 ```
 
-O Compose sobe PostgreSQL 17 e a API na porta 3333, executando migrations antes do servidor.
+No ZimaOS, copie o projeto para uma pasta persistente, ajuste `POSTGRES_PASSWORD` e `API_PORT` no `.env` e importe o `docker-compose.yml` pelo App Store/gerenciador de Compose. O Compose sobe PostgreSQL 17 e a API, executa migrations antes do servidor e reinicia os serviços automaticamente.
+
+A API fica disponível em `http://<ip-do-zimaos>:<API_PORT>`. O endpoint para o healthcheck é `/health` e a documentação fica em `/docs`.
+
+Para atualizar a instalação:
+
+```powershell
+docker compose pull
+docker compose up -d --build
+```
 
 ## Backup e restauração
 

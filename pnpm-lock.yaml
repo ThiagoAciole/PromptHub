@@ -29,6 +29,9 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
+      drizzle-kit:
+        specifier: ^0.31.10
+        version: 0.31.10
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(@types/pg@8.20.3)(pg@8.22.0)
@@ -57,9 +60,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.66.0
         version: 8.66.0(eslint@10.8.0)(typescript@5.9.3)
-      drizzle-kit:
-        specifier: ^0.31.10
-        version: 0.31.10
       eslint:
         specifier: ^10.8.0
         version: 10.8.0
