@@ -1,6 +1,6 @@
-# Prompt Hub API
+# Prompt Hub
 
-API REST modular para catálogo local de prompts, construída com Fastify, TypeScript, Drizzle ORM e PostgreSQL.
+Catálogo web de prompts com frontend React/Mantine e API Fastify, TypeScript, Drizzle ORM e PostgreSQL.
 
 ## Requisitos
 
@@ -27,6 +27,14 @@ corepack pnpm db:generate
 corepack pnpm db:migrate
 corepack pnpm dev
 ```
+
+Em outro terminal, execute o frontend com Vite:
+
+```powershell
+corepack pnpm dev:web
+```
+
+A interface ficará disponível em `http://localhost:5173` e consumirá a API em `http://localhost:3333/api/v1`.
 
 Endpoints principais:
 
@@ -58,7 +66,7 @@ docker compose logs -f api
 
 No ZimaOS, copie o projeto para uma pasta persistente, ajuste `POSTGRES_PASSWORD` e `API_PORT` no `.env` e importe o `docker-compose.yml` pelo App Store/gerenciador de Compose. O Compose sobe PostgreSQL 17 e a API, executa migrations antes do servidor e reinicia os serviços automaticamente.
 
-A API fica disponível em `http://<ip-do-zimaos>:<API_PORT>`. O endpoint para o healthcheck é `/health` e a documentação fica em `/docs`.
+A aplicação fica disponível em `http://<ip-do-zimaos>:<API_PORT>`. O frontend e a API usam a mesma porta; o endpoint para o healthcheck é `/health` e a documentação fica em `/docs`.
 
 Para atualizar a instalação:
 
