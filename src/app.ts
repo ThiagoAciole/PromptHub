@@ -12,6 +12,7 @@ import { tagRoutes } from "./modules/tags/tag.routes.js";
 import { promptRoutes } from "./modules/prompts/prompt.routes.js";
 import { importRoutes } from "./modules/imports/import.routes.js";
 import { exportRoutes } from "./modules/exports/export.routes.js";
+import { systemRoutes } from "./modules/system/system.routes.js";
 
 export interface BuildAppOptions {
   config: AppConfig;
@@ -44,6 +45,7 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
   void app.register(promptRoutes, { prefix: "/api/v1/prompts" });
   void app.register(importRoutes, { prefix: "/api/v1/imports" });
   void app.register(exportRoutes, { prefix: "/api/v1/exports" });
+  void app.register(systemRoutes);
 
   return app;
 }

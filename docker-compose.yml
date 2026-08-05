@@ -2,35 +2,37 @@ services:
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_DB: prompthub
-      POSTGRES_USER: prompthub
-      POSTGRES_PASSWORD: prompthub
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U prompthub -d prompthub"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
+      POSTGRES_DB: ${POSTGRES_DB:-prompthub}
+      POSTGRES_USER: ${POSTGRES_USER:-prompthub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-prompthub}
     volumes:
-      - prompt-hub-postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
-  postgres-test:
-    image: postgres:17-alpine
+  api:
+    build: .
     environment:
-      POSTGRES_DB: prompthub_test
-      POSTGRES_USER: prompthub
-      POSTGRES_PASSWORD: prompthub
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3333
+      DATABASE_URL: postgres://${POSTGRES_USER:-prompthub}:${POSTGRES_PASSWORD:-prompthub}@postgres:5432/${POSTGRES_DB:-prompthub}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-10}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     ports:
-      - "5433:5432"
+      - "${API_PORT:-3333}:3333"
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U prompthub -d prompthub_test"]
-      interval: 5s
-      timeout: 3s
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3333/health"]
+      interval: 10s
+      timeout: 5s
       retries: 10
-    volumes:
-      - prompt-hub-postgres-test-data:/var/lib/postgresql/data
 
 volumes:
-  prompt-hub-postgres-data:
-  prompt-hub-postgres-test-data:
+  postgres-data:
