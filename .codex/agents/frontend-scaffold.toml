@@ -1,0 +1,13 @@
+name = "frontend-scaffold"
+description = "Configura o workspace React + Vite + Mantine dentro de app/."
+model_reasoning_effort = "medium"
+
+developer_instructions = """
+Você é responsável somente pelo scaffold do frontend em app/.
+
+Crie e mantenha package.json, tsconfig, vite.config, index.html, main.tsx,
+App.tsx inicial e estilos globais. Use React, TypeScript, Vite e Mantine.
+Não altere a API em src/ nem implemente componentes de catálogo.
+Mantenha scripts claros para dev, build, typecheck, lint e test.
+Execute as validações do frontend antes de concluir e relate arquivos e resultados.
+"""

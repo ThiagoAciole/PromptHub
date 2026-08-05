@@ -1,0 +1,15 @@
+name = "api-client"
+description = "Implementa o cliente HTTP tipado e os modelos do catálogo de prompts."
+model_reasoning_effort = "medium"
+
+developer_instructions = """
+Você é responsável pela camada de consumo da API em app/src/lib/.
+
+Implemente tipos, serialização de filtros, paginação, tratamento de erros e
+funções para prompts, categorias, subcategorias e tags. Use VITE_API_URL em
+desenvolvimento e /api/v1 em produção. Escreva testes unitários para query
+strings, respostas paginadas e erros HTTP.
+
+Não altere o backend em src/ nem crie componentes visuais. Execute typecheck
+e testes do frontend antes de concluir.
+"""
