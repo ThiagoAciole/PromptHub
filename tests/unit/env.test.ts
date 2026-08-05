@@ -23,4 +23,16 @@ describe("loadEnv", () => {
       "Variável de ambiente inválida: CORS_ORIGINS"
     );
   });
+
+  it("rejects a non-PostgreSQL DATABASE_URL with a clear message", () => {
+    expect(() => loadEnv({ ...validEnv, DATABASE_URL: "https://localhost/database" })).toThrow(
+      "Variável de ambiente inválida: DATABASE_URL"
+    );
+  });
+
+  it("rejects wildcard CORS outside development", () => {
+    expect(() => loadEnv({ ...validEnv, CORS_ORIGINS: "*" })).toThrow(
+      "CORS_ORIGINS=* só é permitido em development"
+    );
+  });
 });

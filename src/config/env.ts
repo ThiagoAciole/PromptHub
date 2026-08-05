@@ -25,6 +25,21 @@ function required(source: NodeJS.ProcessEnv, name: string): string {
   return value;
 }
 
+export function validateDatabaseUrl(value: string): string {
+  const trimmed = value.trim();
+  let parsed: URL;
+  try {
+    parsed = new URL(trimmed);
+  } catch {
+    throw new Error("Variável de ambiente inválida: DATABASE_URL deve ser uma URL PostgreSQL válida");
+  }
+
+  if (!["postgres:", "postgresql:"].includes(parsed.protocol) || !parsed.hostname) {
+    throw new Error("Variável de ambiente inválida: DATABASE_URL deve ser uma URL PostgreSQL válida");
+  }
+  return trimmed;
+}
+
 function positiveNumber(source: NodeJS.ProcessEnv, name: string, fallback: string): number {
   const raw = source[name]?.trim() || fallback;
   const value = Number(raw);
@@ -97,7 +112,7 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): AppConfig {
     nodeEnv,
     host: validateHost(source.HOST?.trim() || "0.0.0.0"),
     port: positiveNumber(source, "PORT", "3333"),
-    databaseUrl: required(source, "DATABASE_URL"),
+    databaseUrl: validateDatabaseUrl(required(source, "DATABASE_URL")),
     corsOrigins: validateCorsOrigins(source, nodeEnv),
     maxUploadSizeMb: positiveNumber(source, "MAX_UPLOAD_SIZE_MB", "10"),
     logLevel
