@@ -7,7 +7,7 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider
+    <MantineProvider forceColorScheme="dark"
       theme={{
         fontFamily: "Inter, sans-serif",
         primaryColor: "indigo",
