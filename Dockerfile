@@ -14,6 +14,7 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml drizzle.config.ts ./
 RUN pnpm install --frozen-lockfile --prod
 COPY --from=build /app/dist ./dist
+COPY src ./src
 COPY drizzle ./drizzle
 RUN addgroup -S app && adduser -S app -G app && chown -R app:app /app
 USER app

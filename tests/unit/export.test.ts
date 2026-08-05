@@ -4,8 +4,8 @@ import { serializeCsv, type PromptExportRow } from "../../src/modules/exports/ex
 describe("serializeCsv", () => {
   it("escapes commas and quotes in prompt content", () => {
     const row: PromptExportRow = {
-      id: "1", title: "Título, teste", content: 'texto "especial"', description: null, type: "TEXT", language: "pt-BR",
-      contributor: null, forDevelopers: false, favorite: false, archived: false, createdAt: new Date("2026-01-01"), updatedAt: new Date("2026-01-01")
+      id: "1", title: "Título, teste", content: 'texto "especial"', originalTitle: null, originalContent: null, description: null, type: "text", language: "pt-BR",
+      contributor: null, forDevelopers: false, favorite: false, archived: false, category: null, subcategory: null, tags: ["teste"], createdAt: new Date("2026-01-01"), updatedAt: new Date("2026-01-01")
     };
     expect(serializeCsv([row])).toContain('"Título, teste"');
     expect(serializeCsv([row])).toContain('"texto ""especial"""');
