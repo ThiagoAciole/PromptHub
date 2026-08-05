@@ -28,7 +28,10 @@ body {
 .prompt-card:hover { border-color: #575164; transform: translateY(-2px); }
 .prompt-card-content { width: 100%; min-height: 100%; }
 .prompt-card .mantine-Title-root { font-size: 1.13rem; font-weight: 600; }
-.prompt-card-description { line-height: 1.55; min-height: 72px; }
+.prompt-card-terminal { box-sizing: border-box; width: 100%; height: 128px; overflow: auto; margin: 0; padding: 10px; border: 1px solid #2b3037; border-radius: 5px; background: #252525; color: #c6c2cb; font: 12px/1.32 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; word-break: break-word; text-align: left; }
+.prompt-card-terminal::-webkit-scrollbar { width: 8px; height: 8px; }
+.prompt-card-terminal::-webkit-scrollbar-track { background: #1a1a1a; }
+.prompt-card-terminal::-webkit-scrollbar-thumb { background: #77777b; border-radius: 4px; }
 .prompt-card .mantine-Badge-root { background: #202026; color: #a8a1b3; border: 0; font-family: ui-monospace, monospace; font-size: 10px; }
 .prompt-card-actions { border-top: 1px solid #292830; margin: auto -18px -18px; padding: 12px 18px 0; min-height: 30px; }
 .create-modal { background: #111117; border: 1px solid #2b2934; }

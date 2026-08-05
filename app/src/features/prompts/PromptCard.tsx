@@ -15,7 +15,7 @@ export function PromptCard({ prompt, onOpen, onToggleFavorite, onCopy }: PromptC
           </ActionIcon>
         </Tooltip>
       </Group>
-      <Text c="dimmed" size="sm" lineClamp={3} className="prompt-card-description">{prompt.description || prompt.content}</Text>
+      <pre className="prompt-card-terminal" aria-label={`Conteúdo do prompt ${prompt.title}`}>{prompt.content}</pre>
       <Group gap="xs">{prompt.category && <Badge variant="light">{prompt.category}</Badge>}{prompt.tags.slice(0, 3).map((tag) => <Badge key={tag} variant="outline">{tag}</Badge>)}</Group>
       <Group justify="space-between" mt="xs" className="prompt-card-actions"><Text size="sm" c="dimmed">{prompt.type}</Text><Group gap={4}><Button variant="subtle" size="compact-sm" onClick={() => onOpen(prompt)}>•••</Button><Button variant="subtle" size="compact-sm" leftSection={<IconCopy size={15} />} onClick={() => onCopy(prompt)} aria-label="Copiar prompt">Copiar</Button></Group></Group>
     </Stack>
