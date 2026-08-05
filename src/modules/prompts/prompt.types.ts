@@ -1,6 +1,8 @@
 export interface PromptInput {
   title: string;
   content: string;
+  originalTitle?: string | undefined;
+  originalContent?: string | undefined;
   description?: string | undefined;
   type?: string | undefined;
   language?: string | undefined;

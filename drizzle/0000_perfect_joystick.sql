@@ -18,6 +18,8 @@ CREATE TABLE "prompts" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(200) NOT NULL,
 	"content" text NOT NULL,
+	"original_title" text,
+	"original_content" text,
 	"description" text,
 	"type" varchar(50) DEFAULT 'text' NOT NULL,
 	"language" varchar(20) DEFAULT 'pt-BR' NOT NULL,

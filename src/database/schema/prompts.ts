@@ -8,6 +8,8 @@ export const prompts = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     title: varchar("title", { length: 200 }).notNull(),
     content: text("content").notNull(),
+    originalTitle: text("original_title"),
+    originalContent: text("original_content"),
     description: text("description"),
     type: varchar("type", { length: 50 }).notNull().default("text"),
     language: varchar("language", { length: 20 }).notNull().default("pt-BR"),

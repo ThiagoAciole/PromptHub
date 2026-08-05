@@ -18,6 +18,8 @@ export function createPromptRepository(db: Database) {
               ilike(prompts.title, `%${filters.search}%`),
               ilike(prompts.description, `%${filters.search}%`),
               ilike(prompts.content, `%${filters.search}%`),
+              ilike(prompts.originalTitle, `%${filters.search}%`),
+              ilike(prompts.originalContent, `%${filters.search}%`),
               ilike(prompts.contributor, `%${filters.search}%`)
             )
           : undefined

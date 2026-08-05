@@ -3,6 +3,8 @@ import { Type } from "@sinclair/typebox";
 export const promptBody = Type.Object({
   title: Type.String({ minLength: 1, maxLength: 200 }),
   content: Type.String({ minLength: 1 }),
+  originalTitle: Type.Optional(Type.String({ maxLength: 200 })),
+  originalContent: Type.Optional(Type.String()),
   description: Type.Optional(Type.String()),
   type: Type.Optional(Type.String({ maxLength: 50 })),
   language: Type.Optional(Type.String({ maxLength: 20 })),

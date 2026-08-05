@@ -57,6 +57,8 @@ export function createPromptService(db: Database) {
         .values({
           title: input.title,
           content: input.content,
+          originalTitle: input.originalTitle,
+          originalContent: input.originalContent,
           description: input.description,
           type: input.type ?? "text",
           language: input.language ?? "pt-BR",
@@ -87,6 +89,8 @@ export function createPromptService(db: Database) {
       const merged: PromptInput = {
         title: input.title ?? current.title,
         content: input.content ?? current.content,
+        originalTitle: input.originalTitle ?? current.originalTitle ?? undefined,
+        originalContent: input.originalContent ?? current.originalContent ?? undefined,
         description: input.description ?? current.description ?? undefined,
         type: input.type ?? current.type,
         language: input.language ?? current.language,
@@ -104,6 +108,8 @@ export function createPromptService(db: Database) {
         .set({
           title: merged.title,
           content: merged.content,
+          originalTitle: merged.originalTitle,
+          originalContent: merged.originalContent,
           description: merged.description,
           type: merged.type,
           language: merged.language,
@@ -139,7 +145,7 @@ export function createPromptService(db: Database) {
         title = `Cópia ${attempt} de ${source.title}`;
         attempt += 1;
       }
-      return this.create({ title, content: source.content, description: source.description ?? undefined, type: source.type, language: source.language, contributor: source.contributor ?? undefined, forDevelopers: source.forDevelopers, favorite: source.favorite, archived: source.archived, categoryId: source.categoryId ?? undefined, subcategoryId: source.subcategoryId ?? undefined });
+      return this.create({ title, content: source.content, originalTitle: source.originalTitle ?? undefined, originalContent: source.originalContent ?? undefined, description: source.description ?? undefined, type: source.type, language: source.language, contributor: source.contributor ?? undefined, forDevelopers: source.forDevelopers, favorite: source.favorite, archived: source.archived, categoryId: source.categoryId ?? undefined, subcategoryId: source.subcategoryId ?? undefined });
     }
   };
 }
