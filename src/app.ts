@@ -6,6 +6,9 @@ import { corsPlugin } from "./plugins/cors.js";
 import { databasePlugin } from "./plugins/database.js";
 import { errorHandlerPlugin } from "./plugins/error-handler.js";
 import { swaggerPlugin } from "./plugins/swagger.js";
+import { categoryRoutes } from "./modules/categories/category.routes.js";
+import { subcategoryRoutes } from "./modules/subcategories/subcategory.routes.js";
+import { tagRoutes } from "./modules/tags/tag.routes.js";
 
 export interface BuildAppOptions {
   config: AppConfig;
@@ -32,6 +35,9 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
   });
   void app.register(swaggerPlugin);
   void app.register(errorHandlerPlugin, { production: config.nodeEnv === "production" });
+  void app.register(categoryRoutes, { prefix: "/api/v1/categories" });
+  void app.register(subcategoryRoutes, { prefix: "/api/v1/subcategories" });
+  void app.register(tagRoutes, { prefix: "/api/v1/tags" });
 
   return app;
 }
