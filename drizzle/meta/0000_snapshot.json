@@ -495,9 +495,15 @@
         }
       },
       "indexes": {
-        "subcategories_slug_unique": {
-          "name": "subcategories_slug_unique",
+        "subcategories_category_slug_unique": {
+          "name": "subcategories_category_slug_unique",
           "columns": [
+            {
+              "expression": "category_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
             {
               "expression": "slug",
               "isExpression": false,

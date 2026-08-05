@@ -16,7 +16,7 @@ export const subcategories = pgTable(
       .$onUpdateFn(() => new Date())
   },
   (table) => [
-    uniqueIndex("subcategories_slug_unique").on(table.slug),
+    uniqueIndex("subcategories_category_slug_unique").on(table.categoryId, table.slug),
     index("subcategories_category_id_idx").on(table.categoryId),
     index("subcategories_name_idx").on(table.name)
   ]

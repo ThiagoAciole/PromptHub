@@ -19,7 +19,8 @@ export function transformCsvRow(row: CsvRow, rowNumber: number): TransformResult
       content,
       type: row.type?.trim() || "TEXT",
       contributor: row.contributor?.trim() || undefined,
-      forDevelopers: rawBoolean === "true" || rawBoolean === "1" || rawBoolean === "yes"
+      forDevelopers: rawBoolean === "true" || rawBoolean === "1" || rawBoolean === "yes",
+      tags: rawBoolean === "true" || rawBoolean === "1" || rawBoolean === "yes" ? ["desenvolvimento"] : []
     }
   };
 }

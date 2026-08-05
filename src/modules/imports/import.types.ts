@@ -14,6 +14,7 @@ export interface PromptImportInput {
   type?: string | undefined;
   contributor?: string | undefined;
   forDevelopers?: boolean | undefined;
+  tags?: string[] | undefined;
 }
 
 export interface ImportRowError {

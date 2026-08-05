@@ -5,7 +5,7 @@ describe("transformCsvRow", () => {
   it("maps the CSV developer flag", () => {
     expect(transformCsvRow({ act: "Título", prompt: "Conteúdo", for_devs: "TRUE" }, 2)).toEqual({
       ok: true,
-      value: { title: "Título", content: "Conteúdo", type: "TEXT", forDevelopers: true }
+      value: { title: "Título", content: "Conteúdo", type: "TEXT", forDevelopers: true, tags: ["desenvolvimento"] }
     });
   });
 

@@ -67,7 +67,7 @@ CREATE INDEX "prompts_favorite_idx" ON "prompts" USING btree ("favorite");--> st
 CREATE INDEX "prompts_archived_idx" ON "prompts" USING btree ("archived");--> statement-breakpoint
 CREATE INDEX "prompts_created_at_idx" ON "prompts" USING btree ("created_at");--> statement-breakpoint
 CREATE INDEX "prompts_updated_at_idx" ON "prompts" USING btree ("updated_at");--> statement-breakpoint
-CREATE UNIQUE INDEX "subcategories_slug_unique" ON "subcategories" USING btree ("slug");--> statement-breakpoint
+CREATE UNIQUE INDEX "subcategories_category_slug_unique" ON "subcategories" USING btree ("category_id","slug");--> statement-breakpoint
 CREATE INDEX "subcategories_category_id_idx" ON "subcategories" USING btree ("category_id");--> statement-breakpoint
 CREATE INDEX "subcategories_name_idx" ON "subcategories" USING btree ("name");--> statement-breakpoint
 CREATE UNIQUE INDEX "tags_slug_unique" ON "tags" USING btree ("slug");--> statement-breakpoint
