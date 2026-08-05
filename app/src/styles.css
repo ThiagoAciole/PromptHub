@@ -39,6 +39,7 @@ body {
 .csv-dropzone:hover { border-color: #6d9bdb; background: #141f2a; }
 .browse-link { color: #65a7f3; }
 .selected-file { display: flex; align-items: center; gap: 8px; min-height: 32px; }
+.csv-preview { max-height: 150px; overflow: auto; margin: 0; padding: 14px; border: 1px solid #2b3037; border-radius: 6px; background: #242424; color: #d8d5dc; font: 13px/1.28 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; word-break: break-word; text-align: left; }
 .upload-actions { padding-top: 6px; }
 .detail-drawer { background: #111117; border-left: 1px solid #2b2934; }
 .detail-drawer-header { background: #111117; border-bottom: 1px solid #2b2934; }
