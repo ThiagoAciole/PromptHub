@@ -28,3 +28,10 @@ export const listCategories = () => request<TaxonomyItem[]>("/categories");
 export const listSubcategories = () => request<TaxonomyItem[]>("/subcategories");
 export const listTags = () => request<TaxonomyItem[]>("/tags");
 export const updatePrompt = (id: string, patch: Partial<Pick<Prompt, "favorite" | "archived">>) => request<Prompt>(`/prompts/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(patch) });
+export interface ImportSummary { received: number; created: number; duplicated: number; ignored: number; failed: number; errors: Array<{ row: number; message: string }>; totalErrors: number }
+export async function importCsv(file: File): Promise<ImportSummary> {
+  const form = new FormData(); form.append("file", file);
+  const response = await fetch(`${baseUrl}/imports/csv`, { method: "POST", body: form });
+  if (!response.ok) { let message = `Erro HTTP ${response.status}`; try { message = ((await response.json()) as { message?: string }).message ?? message; } catch { /* resposta sem JSON */ } throw new ApiError(response.status, message); }
+  return response.json() as Promise<ImportSummary>;
+}

@@ -34,6 +34,10 @@ body {
 .create-modal-header { background: #111117; border-bottom: 1px solid #2b2934; }
 .create-modal-title { font-size: 1.35rem; }
 .create-modal .mantine-Input-input, .create-modal .mantine-Textarea-input { background: #15151c; border-color: #2b2934; }
+.csv-dropzone { min-height: 150px; border: 1px dashed #3b4350; background: #121a22; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #aaaeba; gap: 8px; }
+.csv-dropzone:hover { border-color: #6d9bdb; background: #141f2a; }
+.browse-link { color: #65a7f3; }
+.selected-file { display: flex; align-items: center; gap: 8px; min-height: 32px; }
 .detail-drawer { background: #111117; border-left: 1px solid #2b2934; }
 .detail-drawer-header { background: #111117; border-bottom: 1px solid #2b2934; }
 .detail-drawer-body { background: #111117; }
