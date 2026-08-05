@@ -15,4 +15,14 @@ describe("parsePagination", () => {
   it("caps limit at 100", () => {
     expect(parsePagination({ limit: "500", total: 0 }).limit).toBe(100);
   });
+
+  it("falls back to safe values for invalid page and limit", () => {
+    expect(parsePagination({ page: "0", limit: "20.5", total: 41 })).toEqual({
+      page: 1,
+      limit: 20,
+      offset: 0,
+      total: 41,
+      totalPages: 3
+    });
+  });
 });

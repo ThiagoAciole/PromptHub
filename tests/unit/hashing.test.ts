@@ -7,4 +7,8 @@ describe("createPromptHash", () => {
       createPromptHash("meu título", "Conteúdo com espaços")
     );
   });
+
+  it("keeps title and content boundaries distinct", () => {
+    expect(createPromptHash("ab:c", "d")).not.toBe(createPromptHash("ab", "c:d"));
+  });
 });

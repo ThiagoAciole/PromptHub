@@ -5,6 +5,6 @@ function normalize(value: string): string {
 }
 
 export function createPromptHash(title: string, content: string): string {
-  const normalized = `${normalize(title)}:${normalize(content)}`;
+  const normalized = JSON.stringify([normalize(title), normalize(content)]);
   return createHash("sha256").update(normalized, "utf8").digest("hex");
 }
