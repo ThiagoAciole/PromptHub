@@ -20,7 +20,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-export const listPrompts = (query: PromptQuery) => request<PromptPage>(`/prompts?${buildQueryString(query)}`);
+export const listPrompts = async (query: PromptQuery) => {
+  const page = await request<PromptPage>(`/prompts?${buildQueryString(query)}`);
+  return { ...page, data: page.data.map((prompt) => ({ ...prompt, tags: prompt.tags ?? [], category: prompt.category ?? null, subcategory: prompt.subcategory ?? null })) };
+};
 export const listCategories = () => request<TaxonomyItem[]>("/categories");
 export const listSubcategories = () => request<TaxonomyItem[]>("/subcategories");
 export const listTags = () => request<TaxonomyItem[]>("/tags");
