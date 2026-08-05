@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import type { Database } from "../../database/client.js";
 import { categories } from "../../database/schema/categories.js";
 import { promptTags } from "../../database/schema/prompt-tags.js";
