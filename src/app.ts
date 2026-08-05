@@ -13,6 +13,7 @@ import { promptRoutes } from "./modules/prompts/prompt.routes.js";
 import { importRoutes } from "./modules/imports/import.routes.js";
 import { exportRoutes } from "./modules/exports/export.routes.js";
 import { systemRoutes } from "./modules/system/system.routes.js";
+import { staticPlugin } from "./plugins/static.js";
 
 export interface BuildAppOptions {
   config: AppConfig;
@@ -46,6 +47,7 @@ export function buildApp(options: BuildAppOptions): FastifyInstance {
   void app.register(importRoutes, { prefix: "/api/v1/imports" });
   void app.register(exportRoutes, { prefix: "/api/v1/exports" });
   void app.register(systemRoutes);
+  void app.register(staticPlugin);
 
   return app;
 }
