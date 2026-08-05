@@ -10,7 +10,7 @@ describe("PromptCard", () => {
   it("shows prompt metadata and exposes actions", () => {
     render(<MantineProvider><PromptCard prompt={prompt} onOpen={vi.fn()} onToggleFavorite={vi.fn()} onCopy={vi.fn()} /></MantineProvider>);
     expect(screen.getByText("React helper")).toBeTruthy();
-    expect(screen.getByText("A useful helper")).toBeTruthy();
+    expect(screen.getByText("Use this prompt")).toBeTruthy();
     expect(screen.getByText("react")).toBeTruthy();
     expect(screen.getByRole("button", { name: /favoritar/i })).toBeTruthy();
     expect(screen.getByRole("button", { name: /copiar/i })).toBeTruthy();
