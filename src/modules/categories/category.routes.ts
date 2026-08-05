@@ -1,8 +1,10 @@
 import { Type } from "@sinclair/typebox";
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 import type { FastifyPluginAsync } from "fastify";
 import { AppError } from "../../shared/errors/app-error.js";
 import { categories } from "../../database/schema/categories.js";
+import { normalizeSlug } from "../../shared/slug/normalize-slug.js";
+import { prompts } from "../../database/schema/prompts.js";
 
 const bodySchema = Type.Object({
   name: Type.String({ minLength: 1, maxLength: 120 }),
@@ -12,14 +14,14 @@ const bodySchema = Type.Object({
 const paramsSchema = Type.Object({ id: Type.String({ format: "uuid" }) });
 
 export const categoryRoutes: FastifyPluginAsync = async (app) => {
-  app.get("/", async () => app.db.select().from(categories).orderBy(asc(categories.name)));
+  app.get("/", async () => app.db.select({ id: categories.id, name: categories.name, slug: categories.slug, description: categories.description, createdAt: categories.createdAt, updatedAt: categories.updatedAt, promptCount: sql<number>`(select count(*)::int from ${prompts} where ${prompts.categoryId} = ${categories.id})` }).from(categories).orderBy(asc(categories.name)));
 
   app.post<{ Body: { name: string; slug: string; description?: string } }>(
     "/",
     { schema: { body: bodySchema } },
     async (request, reply) => {
       try {
-        const [category] = await app.db.insert(categories).values(request.body).returning();
+        const [category] = await app.db.insert(categories).values({ ...request.body, slug: normalizeSlug(request.body.slug) }).returning();
         return reply.code(201).send(category);
       } catch (error) {
         if (typeof error === "object" && error !== null && "code" in error && error.code === "23505") {
@@ -42,7 +44,7 @@ export const categoryRoutes: FastifyPluginAsync = async (app) => {
     async (request) => {
       const [category] = await app.db
         .update(categories)
-        .set({ ...request.body, updatedAt: new Date() })
+        .set({ ...request.body, ...(request.body.slug === undefined ? {} : { slug: normalizeSlug(request.body.slug) }), updatedAt: new Date() })
         .where(eq(categories.id, request.params.id))
         .returning();
       if (!category) throw new AppError("NOT_FOUND", 404, "Categoria não encontrada");

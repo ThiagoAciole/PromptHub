@@ -143,13 +143,18 @@ export function createPromptService(db: Database) {
     },
     async duplicate(id: string) {
       const source = await this.getById(id);
+      const sourceTags = await db
+        .select({ name: tags.name })
+        .from(promptTags)
+        .innerJoin(tags, eq(promptTags.tagId, tags.id))
+        .where(eq(promptTags.promptId, id));
       let title = `Cópia de ${source.title}`;
       let attempt = 2;
       while ((await db.select({ id: prompts.id }).from(prompts).where(eq(prompts.contentHash, createPromptHash(title, source.content)))).length > 0) {
         title = `Cópia ${attempt} de ${source.title}`;
         attempt += 1;
       }
-      return this.create({ title, content: source.content, originalTitle: source.originalTitle ?? undefined, originalContent: source.originalContent ?? undefined, description: source.description ?? undefined, type: source.type, language: source.language, contributor: source.contributor ?? undefined, forDevelopers: source.forDevelopers, favorite: source.favorite, archived: source.archived, categoryId: source.categoryId ?? undefined, subcategoryId: source.subcategoryId ?? undefined });
+      return this.create({ title, content: source.content, originalTitle: source.originalTitle ?? undefined, originalContent: source.originalContent ?? undefined, description: source.description ?? undefined, type: source.type, language: source.language, contributor: source.contributor ?? undefined, forDevelopers: source.forDevelopers, favorite: source.favorite, archived: source.archived, categoryId: source.categoryId ?? undefined, subcategoryId: source.subcategoryId ?? undefined, tags: sourceTags.map((tag) => tag.name) });
     }
   };
 }
