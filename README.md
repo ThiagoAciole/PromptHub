@@ -11,10 +11,10 @@ API de prompts com Fastify, TypeScript, Drizzle ORM e PostgreSQL.
 
 ## Configuração
 
-Copie `.env.example` para `.env` e ajuste `DATABASE_URL`:
+Copie `api/.env.example` para `api/.env` e ajuste `DATABASE_URL`:
 
 ```powershell
-Copy-Item .env.example .env
+Copy-Item api/.env.example api/.env
 corepack pnpm install
 ```
 
@@ -23,17 +23,11 @@ As variáveis principais são `NODE_ENV`, `HOST`, `PORT`, `DATABASE_URL`, `CORS_
 ## Desenvolvimento
 
 ```powershell
-corepack pnpm db:generate
-corepack pnpm db:migrate
-corepack pnpm dev
+corepack pnpm --dir api db:migrate
+corepack pnpm dev:api
 ```
 
-Em outro terminal, execute o frontend com Vite:
-
-```powershell
-```
-
-A interface ficará disponível em `http://localhost:5173` e consumirá a API em `http://localhost:3333/api/v1`.
+O frontend está em `C:\Projetos\PromptHub-web` e não faz parte deste checkout.
 
 Endpoints principais:
 
@@ -41,16 +35,16 @@ Endpoints principais:
 - `GET /api/v1/info`
 - `GET /api/v1/openapi.json`
 - `GET /docs`
-- CRUD em `/api/v1/prompts`, `/categories`, `/subcategories` e `/tags`
-- `POST /api/v1/imports/csv`
-- `GET /api/v1/exports/json` e `/api/v1/exports/csv`
+- CRUD em `/api/v1/prompts`
+- `GET /api/v1/prompts/categories`
+- `POST /api/v1/prompts/import`
 
 ## CSV
 
-O importador aceita as colunas `act`, `prompt`, `for_devs`, `type` e `contributor`.
+O importador aceita as colunas `categoria`, `title`, `prompt` e opcionalmente `type`.
 
 ```powershell
-corepack pnpm import:csv prompts.csv
+corepack pnpm --dir api test
 ```
 
 Linhas inválidas são contabilizadas individualmente e o importador continua processando o arquivo.
@@ -86,15 +80,15 @@ Get-Content backup.sql | docker compose exec -T postgres psql -U prompthub promp
 - `DATABASE_URL` ausente ou inválida: configure uma URL `postgres://` ou `postgresql://` com host.
 - `db:migrate` recusado: confirme que PostgreSQL está acessível na porta configurada ou suba o Compose.
 - `pnpm` não encontrado no Windows: use `corepack pnpm`.
-- Falha na importação: confirme extensão `.csv`, MIME CSV e as colunas `act` e `prompt`.
+- Falha na importação: confirme extensão `.csv`, MIME CSV e as colunas `title` e `prompt`.
 
 ## Validação
 
 ```powershell
-corepack pnpm typecheck
-corepack pnpm lint
-corepack pnpm test
-corepack pnpm build
+corepack pnpm --dir api typecheck
+corepack pnpm --dir api lint
+corepack pnpm --dir api test
+corepack pnpm --dir api build
 ```
 
 Os testes unitários não exigem banco. Os testes de integração e a importação real exigem PostgreSQL separado.
