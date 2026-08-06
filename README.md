@@ -1,6 +1,6 @@
 # Prompt Hub
 
-Catálogo web de prompts com frontend React/Mantine e API Fastify, TypeScript, Drizzle ORM e PostgreSQL.
+API de prompts com Fastify, TypeScript, Drizzle ORM e PostgreSQL.
 
 ## Requisitos
 
@@ -31,7 +31,6 @@ corepack pnpm dev
 Em outro terminal, execute o frontend com Vite:
 
 ```powershell
-corepack pnpm dev:web
 ```
 
 A interface ficará disponível em `http://localhost:5173` e consumirá a API em `http://localhost:3333/api/v1`.
