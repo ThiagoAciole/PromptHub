@@ -1,56 +1,18 @@
 {
-  "name": "prompt-hub-api",
+  "name": "prompt-hub",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "corepack pnpm build:api && corepack pnpm --dir app build",
-    "build:api": "tsc -p tsconfig.json",
-    "start": "node dist/src/server.js",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "dev:web": "corepack pnpm --dir app dev",
-    "build:web": "corepack pnpm --dir app build",
-    "typecheck:web": "corepack pnpm --dir app typecheck",
-    "lint:web": "corepack pnpm --dir app lint",
-    "test:web": "corepack pnpm --dir app test",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio",
-    "import:csv": "tsx scripts/import-csv.ts"
+    "dev:api": "pnpm --dir api dev",
+    "dev:web": "pnpm --dir web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test"
   },
   "engines": {
     "node": ">=22"
   },
-  "dependencies": {
-    "@fastify/cors": "^11.3.0",
-    "@fastify/multipart": "^10.1.0",
-    "@fastify/static": "^8.2.0",
-    "@fastify/swagger": "^9.8.1",
-    "@fastify/swagger-ui": "^6.1.1",
-    "@sinclair/typebox": "^0.34.52",
-    "csv-parse": "^7.0.2",
-    "dotenv": "^17.4.2",
-    "drizzle-orm": "^0.45.2",
-    "drizzle-kit": "^0.31.10",
-    "fastify": "^5.11.2",
-    "fastify-plugin": "^6.0.0",
-    "pg": "^8.22.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/node": "^26.1.2",
-    "@types/pg": "^8.20.3",
-    "@typescript-eslint/eslint-plugin": "^8.66.0",
-    "@typescript-eslint/parser": "^8.66.0",
-    "eslint": "^10.8.0",
-    "eslint-config-prettier": "^10.1.8",
-    "tsx": "^4.23.5",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.66.0",
-    "vitest": "^4.1.10"
-  }
+  "devDependencies": {}
 }

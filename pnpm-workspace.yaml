@@ -1,6 +1,6 @@
 packages:
-  - "."
-  - app
+  - api
+  - web
 onlyBuiltDependencies:
   - esbuild
 allowBuilds:

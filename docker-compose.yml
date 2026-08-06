@@ -15,7 +15,9 @@ services:
     restart: unless-stopped
 
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     environment:
       NODE_ENV: production
       HOST: 0.0.0.0
