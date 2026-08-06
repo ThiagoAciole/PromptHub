@@ -4,24 +4,35 @@ import type { Database } from "../../database/client.js";
 import { parseCsv } from "./csv-parser.js";
 import type { ImportError, ImportSummary } from "./import.types.js";
 
+const parseBoolean = (value: string | undefined) => value?.trim().toLowerCase() === "true";
+
+export function parsePromptCsvRow(value: Record<string, string>) {
+  return {
+    title: value.title?.trim() ?? "",
+    description: value.description?.trim() || null,
+    content: value.content?.trim() ?? "",
+    type: value.type?.trim() ?? "",
+    category: value.category?.trim() || null,
+    tags: (value.tags ?? "").split(";").map((tag) => tag.trim()).filter(Boolean),
+    isFavorite: parseBoolean(value.is_favorite),
+    isArchived: parseBoolean(value.is_archived)
+  };
+}
+
 export async function importCsv(stream: Readable, db: Database): Promise<ImportSummary> {
   const service = createPromptService(db);
   const errors: ImportError[] = [];
   let imported = 0;
 
   for (const { row, value } of await parseCsv(stream)) {
-    const fields = ["title", "prompt"].filter((field) => !value[field]?.trim());
+    const input = parsePromptCsvRow(value);
+    const fields = ["title", "content", "type"].filter((field) => !input[field as keyof typeof input]);
     if (fields.length > 0) {
       errors.push({ row, fields, message: `${fields.join(" e ")} é obrigatório` });
       continue;
     }
 
-    await service.create({
-      category: value.categoria || null,
-      title: value.title!,
-      content: value.prompt!,
-      type: value.type?.trim() || "text"
-    });
+    await service.create(input);
     imported++;
   }
 

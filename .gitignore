@@ -13,3 +13,10 @@ data/imports/*
 !data/imports/.gitkeep
 data/exports/*
 !data/exports/.gitkeep
+
+# Artefatos locais de curadoria do catálogo de prompts
+/prompts-detailed.csv
+/prompts-detailed-enriched.csv
+/prompts-operational.csv
+/scripts/enrich-prompt-metadata.mjs
+/scripts/prompt-metadata-rules.mjs
