@@ -8,10 +8,10 @@ import type {
   PromptInput,
   PromptListQuery,
   PromptListQueryInput,
+  PromptOrder,
   PromptPatch,
   PromptRecord,
-  PromptSort,
-  PromptOrder
+  PromptSort
 } from "./prompt.types.js";
 
 const normalizeTitle = (value: string) => value.trim().toLowerCase().replace(/\s+/g, " ");
@@ -95,6 +95,45 @@ export function normalizePromptListQuery(input: PromptListQueryInput): PromptLis
   return query;
 }
 
-const normalize = <T extends { categoria?: string | null }>(input: T): T => ({ ...input, ...(input.categoria !== undefined ? { categoria: input.categoria?.trim() || null } : {}) });
-export function createPromptService(db: Database) { const repository = createPromptRepository(db); const required = (input: Partial<PromptInput>) => { if (input.title !== undefined && !input.title.trim()) throw new AppError("VALIDATION_ERROR", 400, "title é obrigatório"); if (input.prompt !== undefined && !input.prompt.trim()) throw new AppError("VALIDATION_ERROR", 400, "prompt é obrigatório"); };
- return { create: async (input: PromptInput) => { required(input); return repository.create(normalize(input)); }, list: () => repository.list(), getById: async (id: string) => { const record = await repository.get(id); if (!record) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado"); return record; }, update: async (id: string, input: PromptPatch) => { required(input); const record = await repository.update(id, normalize(input)); if (!record) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado"); return record; }, remove: async (id: string) => { if (!await repository.remove(id)) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado"); }, listCategories: () => repository.categories() }; }
+function assertValidPrompt(input: Pick<PreparedPromptCreate, "title" | "content" | "type">) {
+  if (!input.title) throw new AppError("VALIDATION_ERROR", 400, "title é obrigatório");
+  if (!input.content) throw new AppError("VALIDATION_ERROR", 400, "content é obrigatório");
+  if (!input.type) throw new AppError("VALIDATION_ERROR", 400, "type é obrigatório");
+}
+
+export function createPromptService(db: Database) {
+  const repository = createPromptRepository(db);
+
+  return {
+    create: async (input: PromptInput) => {
+      const prepared = preparePromptCreate(input);
+      assertValidPrompt(prepared);
+      return repository.create(prepared);
+    },
+
+    list: (input: PromptListQueryInput) => repository.list(normalizePromptListQuery(input)),
+
+    getById: async (id: string) => {
+      const record = await repository.get(id);
+      if (!record) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado");
+      return record;
+    },
+
+    update: async (id: string, input: PromptPatch) => {
+      if (Object.keys(input).length === 0) throw new AppError("VALIDATION_ERROR", 400, "Informe ao menos um campo para atualizar");
+
+      const current = await repository.get(id);
+      if (!current) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado");
+
+      const prepared = preparePromptPatch(input, current);
+      assertValidPrompt({ title: prepared.title ?? current.title, content: prepared.content ?? current.content, type: prepared.type ?? current.type });
+      return repository.update(id, prepared);
+    },
+
+    remove: async (id: string) => {
+      if (!(await repository.remove(id))) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado");
+    },
+
+    listCategories: () => repository.categories()
+  };
+}
