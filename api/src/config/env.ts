@@ -1,5 +1,13 @@
-import "dotenv/config";
+import { config } from "dotenv";
+import { existsSync } from "node:fs";
 import { isIP } from "node:net";
+import { fileURLToPath } from "node:url";
+
+export const localEnvPath = fileURLToPath(new URL("../../../.env.local", import.meta.url));
+
+if (existsSync(localEnvPath)) {
+  config({ path: localEnvPath });
+}
 
 export type NodeEnvironment = "development" | "test" | "production";
 export type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";

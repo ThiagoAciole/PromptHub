@@ -11,10 +11,10 @@ API de prompts com Fastify, TypeScript, Drizzle ORM e PostgreSQL.
 
 ## Configuração
 
-Copie `api/.env.example` para `api/.env` e ajuste `DATABASE_URL`:
+Para desenvolvimento local, crie `.env.local` na raiz e ajuste `DATABASE_URL` usando `.env.example` como referência:
 
 ```powershell
-Copy-Item api/.env.example api/.env
+Copy-Item .env.example .env.local
 corepack pnpm install
 ```
 
@@ -54,7 +54,7 @@ Linhas inválidas são contabilizadas individualmente e o importador continua pr
 ## Deploy no ZimaOS
 
 ```powershell
-Copy-Item .env.docker.example .env
+Use `.env.example` como referência para criar ou ajustar `.env`.
 docker compose up -d --build
 docker compose logs -f api
 ```

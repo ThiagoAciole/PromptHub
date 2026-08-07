@@ -19,9 +19,6 @@
   "dependencies": {
     "@fastify/cors": "^11.3.0",
     "@fastify/multipart": "^10.1.0",
-    "@fastify/static": "^8.2.0",
-    "@fastify/swagger": "^9.8.1",
-    "@fastify/swagger-ui": "^6.1.1",
     "@sinclair/typebox": "^0.34.52",
     "csv-parse": "^7.0.2",
     "dotenv": "^17.4.2",
@@ -34,8 +31,6 @@
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.1.2",
     "@types/pg": "^8.20.3",
-    "@typescript-eslint/eslint-plugin": "^8.66.0",
-    "@typescript-eslint/parser": "^8.66.0",
     "drizzle-kit": "^0.31.10",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
