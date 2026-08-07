@@ -17,6 +17,7 @@ data/exports/*
 # Artefatos locais de curadoria do catálogo de prompts
 /prompts-detailed.csv
 /prompts-detailed-enriched.csv
+/prompts-detailed-enriched-resume.csv
 /prompts-operational.csv
 /scripts/enrich-prompt-metadata.mjs
 /scripts/prompt-metadata-rules.mjs
