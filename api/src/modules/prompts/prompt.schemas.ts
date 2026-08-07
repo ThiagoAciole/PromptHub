@@ -25,3 +25,11 @@ export const promptListQuery = Type.Object({
 });
 
 export const promptParams = Type.Object({ id: Type.String({ format: "uuid" }) });
+
+export const promptBulkDeleteBody = Type.Object({
+  ids: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, maxItems: 1000 })
+});
+
+export const promptDeleteAllBody = Type.Object({
+  confirm: Type.Literal("DELETE_ALL_PROMPTS")
+});

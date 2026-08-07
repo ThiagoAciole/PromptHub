@@ -1,4 +1,4 @@
-import { and, arrayContains, asc, count, desc, eq, ilike, isNotNull, or } from "drizzle-orm";
+import { and, arrayContains, asc, count, desc, eq, ilike, inArray, isNotNull, or } from "drizzle-orm";
 import type { Database } from "../../database/client.js";
 import { prompts } from "../../database/schema/prompts.js";
 import type { PreparedPromptCreate, PreparedPromptPatch, PromptListQuery, PromptListResponse } from "./prompt.types.js";
@@ -53,6 +53,12 @@ export function createPromptRepository(db: Database) {
 
     remove: async (id: string) =>
       (await db.delete(prompts).where(eq(prompts.id, id)).returning({ id: prompts.id }))[0],
+
+    removeMany: async (ids: string[]) =>
+      (await db.delete(prompts).where(inArray(prompts.id, ids)).returning({ id: prompts.id })).length,
+
+    removeAll: async () =>
+      (await db.delete(prompts).returning({ id: prompts.id })).length,
 
     categories: async () =>
       (await db

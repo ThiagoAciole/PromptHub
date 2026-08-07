@@ -134,6 +134,15 @@ export function createPromptService(db: Database) {
       if (!(await repository.remove(id))) throw new AppError("NOT_FOUND", 404, "Prompt não encontrado");
     },
 
+    removeMany: (ids: string[]) => repository.removeMany(ids),
+
+    removeAll: async (confirm: string) => {
+      if (confirm !== "DELETE_ALL_PROMPTS") {
+        throw new AppError("VALIDATION_ERROR", 400, "Confirmação inválida para excluir todos os prompts");
+      }
+      return repository.removeAll();
+    },
+
     listCategories: () => repository.categories()
   };
 }

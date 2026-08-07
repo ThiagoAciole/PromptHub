@@ -1,8 +1,8 @@
 import { Type } from "@sinclair/typebox";
 import type { FastifyPluginAsync } from "fastify";
 import { createPromptService } from "./prompt.service.js";
-import { promptBody, promptListQuery, promptParams } from "./prompt.schemas.js";
-import type { PromptInput, PromptListQueryInput, PromptPatch } from "./prompt.types.js";
+import { promptBody, promptBulkDeleteBody, promptDeleteAllBody, promptListQuery, promptParams } from "./prompt.schemas.js";
+import type { PromptBulkDeleteInput, PromptDeleteAllInput, PromptInput, PromptListQueryInput, PromptPatch } from "./prompt.types.js";
 
 export const promptRoutes: FastifyPluginAsync = async (app) => {
   const service = createPromptService(app.db);
@@ -14,6 +14,12 @@ export const promptRoutes: FastifyPluginAsync = async (app) => {
     service.list(request.query));
 
   app.get("/categories", async () => service.listCategories());
+
+  app.delete<{ Body: PromptBulkDeleteInput }>("/batch", { schema: { body: promptBulkDeleteBody } }, async (request) =>
+    ({ deletedCount: await service.removeMany(request.body.ids) }));
+
+  app.delete<{ Body: PromptDeleteAllInput }>("/", { schema: { body: promptDeleteAllBody } }, async (request) =>
+    ({ deletedCount: await service.removeAll(request.body.confirm) }));
 
   app.get<{ Params: { id: string } }>("/:id", { schema: { params: promptParams } }, async (request) =>
     service.getById(request.params.id));

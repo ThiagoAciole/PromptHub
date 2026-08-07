@@ -36,6 +36,8 @@ Endpoints principais:
 - `GET /api/v1/openapi.json`
 - `GET /docs`
 - CRUD em `/api/v1/prompts`
+- `DELETE /api/v1/prompts/batch` com `{ "ids": ["uuid"] }`
+- `DELETE /api/v1/prompts` com `{ "confirm": "DELETE_ALL_PROMPTS" }`
 - `GET /api/v1/prompts/categories`
 - `POST /api/v1/prompts/import`
 

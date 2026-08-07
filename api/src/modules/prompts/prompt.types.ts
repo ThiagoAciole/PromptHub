@@ -11,6 +11,14 @@ export type PromptInput = {
 
 export type PromptPatch = Partial<PromptInput>;
 
+export type PromptBulkDeleteInput = {
+  ids: string[];
+};
+
+export type PromptDeleteAllInput = {
+  confirm: string;
+};
+
 export type PreparedPromptCreate = {
   title: string;
   description: string | null;
